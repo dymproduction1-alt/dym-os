@@ -9,158 +9,200 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-deep: #020202; --bg-main: #050505; --sidebar: #080808; --panel: #0c0c0c;
-            --card: #121212; --accent: #00ffc8; --accent-glow: rgba(0, 255, 200, 0.15);
-            --error: #ff3b3b; --success: #00ff64; --premium: #ffd700;
-            --text-high: #ffffff; --text-mid: #a0a0a0; --text-low: #444444;
-            --border: #1a1a1a; --radius-lg: 20px; --radius-md: 12px;
+    :root {
+        --bg-deep: #020202; --bg-main: #050505; --sidebar: #080808; --panel: #0c0c0c;
+        --card: #121212; --accent: #00ffc8; --accent-glow: rgba(0, 255, 200, 0.15);
+        --error: #ff3b3b; --success: #00ff64; --premium: #ffd700;
+        --text-high: #ffffff; --text-mid: #a0a0a0; --text-low: #444444;
+        --border: #1a1a1a; --radius-lg: 20px; --radius-md: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+        background: var(--bg-deep); color: var(--text-high); 
+        font-family: 'Plus Jakarta Sans', sans-serif; 
+        display: flex; height: 100vh; overflow: hidden; font-size: 13px;
+    }
+
+    /* --- SIDEBAR (DESKTOP) --- */
+    aside { 
+        width: 280px; background: var(--sidebar); 
+        border-right: 1px solid var(--border); 
+        padding: 40px 25px; display: flex; 
+        flex-direction: column; z-index: 10; 
+    }
+    
+    .brand { margin-bottom: 50px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .brand h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: -2px; }
+    .brand .dot { 
+        width: 8px; height: 8px; background: var(--accent); 
+        border-radius: 50%; box-shadow: 0 0 15px var(--accent); 
+    }
+
+    .nav-btn { 
+        padding: 14px 18px; color: var(--text-mid); cursor: pointer; 
+        border-radius: var(--radius-md); margin-bottom: 6px; 
+        font-weight: 600; transition: 0.3s; 
+    }
+    .nav-btn:hover { background: rgba(255,255,255,0.03); color: #fff; }
+    .nav-btn.active { background: var(--accent-glow); color: var(--accent); }
+
+    .user-section { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+    .login-trigger { 
+        background: var(--accent); color: #000; padding: 14px; 
+        border-radius: var(--radius-md); text-align: center; 
+        font-weight: 800; cursor: pointer; transition: 0.3s; 
+    }
+    
+    .profile-card { 
+        background: #0a0a0a; border: 1px solid var(--border); 
+        border-radius: var(--radius-lg); padding: 20px; display: none; 
+    }
+    .xp-bar { background: #151515; height: 6px; border-radius: 10px; overflow: hidden; margin: 12px 0; }
+    #xp-fill { background: var(--accent); height: 100%; width: 0%; transition: 1s; }
+
+    /* --- MAIN CONTENT AREA --- */
+    main { flex: 1; overflow-y: auto; background: var(--bg-main); display: flex; flex-direction: column; }
+    
+    .view-section { 
+        flex: 1; padding: 50px 70px 120px 70px; /* Великий відступ знизу для футера */
+        display: none; animation: fadeIn 0.4s; 
+    }
+    .view-section.active { display: block; }
+    
+    @keyframes fadeIn { 
+        from { opacity: 0; transform: translateY(10px); } 
+        to { opacity: 1; transform: translateY(0); } 
+    }
+    
+    .header-title { font-size: 3.2rem; font-weight: 900; letter-spacing: -3px; margin-bottom: 45px; }
+    .header-title span { color: var(--accent); }
+
+    .content-grid { 
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+        gap: 25px; margin-bottom: 50px; 
+    }
+
+    .module-card { 
+        background: var(--card); border: 1px solid var(--border); 
+        padding: 30px; border-radius: var(--radius-lg); 
+        cursor: pointer; transition: 0.3s; position: relative; 
+    }
+    .module-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+    /* --- FIXED GLOSSY FOOTER --- */
+    footer { 
+        position: fixed; bottom: 0; left: 280px; right: 0; 
+        height: 60px; padding: 0 40px; 
+        background: rgba(5, 5, 5, 0.85); 
+        backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+        border-top: 1px solid rgba(0, 255, 200, 0.1); 
+        display: flex; justify-content: space-between; 
+        align-items: center; z-index: 999;
+    }
+
+    .footer-left { display: flex; align-items: center; gap: 15px; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+    .footer-left .copy { color: var(--text-low); }
+
+    .status-indicator { display: flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+    .status-dot { 
+        width: 6px; height: 6px; background: var(--accent); 
+        border-radius: 50%; box-shadow: 0 0 8px var(--accent); 
+        animation: pulse 2s infinite; 
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(1.2); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    .footer-right { display: flex; gap: 30px; }
+    .footer-right a { 
+        color: var(--text-mid); text-decoration: none; font-size: 11px; 
+        font-weight: 700; transition: 0.3s; position: relative; 
+    }
+    .footer-right a:hover { color: #fff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+
+    /* --- MODALS & OVERLAYS --- */
+    .overlay { 
+        position: fixed; inset: 0; background: rgba(0,0,0,0.96); 
+        backdrop-filter: blur(15px); display: none; 
+        align-items: center; justify-content: center; z-index: 9999; padding: 20px; 
+    }
+    .modal-body { 
+        background: var(--panel); border: 1px solid var(--border); 
+        width: 100%; max-width: 650px; border-radius: 28px; 
+        padding: 45px; position: relative; max-height: 85vh; overflow-y: auto; 
+    }
+    
+    .quiz-option { 
+        background: #151515; padding: 18px; border-radius: 15px; 
+        margin-top: 12px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; 
+    }
+    .quiz-option.correct { border-color: var(--success); color: var(--success); background: rgba(0,255,100,0.05); }
+    .quiz-option.wrong { border-color: var(--error); color: var(--error); background: rgba(255,59,59,0.05); }
+
+    .btn-primary { 
+        background: var(--accent); color: #000; border: none; padding: 18px; 
+        border-radius: 15px; font-weight: 900; cursor: pointer; width: 100%; transition: 0.3s; 
+    }
+    input, textarea { 
+        width: 100%; background: #151515; border: 1px solid var(--border); 
+        padding: 16px; border-radius: 12px; color: #fff; margin-bottom: 20px; 
+    }
+
+    #notify { 
+        position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
+        background: var(--accent); color: #000; padding: 12px 30px; 
+        border-radius: 40px; z-index: 10001; font-weight: 800; display: none; 
+    }
+    
+    .admin-fab { 
+        position: fixed; bottom: 100px; right: 35px; width: 60px; height: 60px; 
+        background: var(--accent); border-radius: 50%; display: none; 
+        align-items: center; justify-content: center; cursor: pointer; 
+        z-index: 1000; color: #000; font-size: 24px; box-shadow: 0 0 30px var(--accent-glow); 
+    }
+    
+    .hidden { display: none !important; }
+
+    /* --- RESPONSIVE DESIGN (MOBILE) --- */
+    @media (max-width: 900px) {
+        body { flex-direction: column; overflow-y: auto; height: auto; }
+
+        aside { 
+            width: 100%; height: auto; padding: 25px 20px; 
+            border-right: none; border-bottom: 1px solid var(--border); 
+            position: relative; 
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg-deep); color: var(--text-high); 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            display: flex; height: 100vh; overflow: hidden; font-size: 13px;
+        .brand { margin-bottom: 25px; }
+        
+        nav { 
+            display: flex; overflow-x: auto; gap: 8px; 
+            padding-bottom: 5px; scrollbar-width: none; 
         }
+        nav::-webkit-scrollbar { display: none; }
+        .nav-btn { margin-bottom: 0; white-space: nowrap; padding: 10px 16px; font-size: 12px; }
 
-        /* --- SIDEBAR --- */
-        aside { width: 280px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 40px 25px; display: flex; flex-direction: column; z-index: 10; }
-        .brand { margin-bottom: 50px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .brand h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: -2px; }
-        .brand .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 15px var(--accent); }
+        .user-section { margin-top: 20px; padding-top: 20px; }
 
-        .nav-btn { padding: 14px 18px; color: var(--text-mid); cursor: pointer; border-radius: var(--radius-md); margin-bottom: 6px; font-weight: 600; transition: 0.3s; }
-        .nav-btn:hover { background: rgba(255,255,255,0.03); color: #fff; }
-        .nav-btn.active { background: var(--accent-glow); color: var(--accent); }
+        main { overflow-y: visible; }
+        .view-section { padding: 35px 20px 140px 20px !important; }
+        .header-title { font-size: 2.2rem; letter-spacing: -1.5px; margin-bottom: 30px; }
+        .content-grid { grid-template-columns: 1fr; gap: 15px; }
 
-        .user-section { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
-        .login-trigger { background: var(--accent); color: #000; padding: 14px; border-radius: var(--radius-md); text-align: center; font-weight: 800; cursor: pointer; transition: 0.3s; }
-        
-        .profile-card { background: #0a0a0a; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; display: none; }
-        .xp-bar { background: #151515; height: 6px; border-radius: 10px; overflow: hidden; margin: 12px 0; }
-        #xp-fill { background: var(--accent); height: 100%; width: 0%; transition: 1s; }
+        footer { 
+            left: 0; height: auto; padding: 20px; 
+            flex-direction: column; gap: 15px; text-align: center; 
+        }
+        .footer-left { flex-direction: column; gap: 8px; }
+        .footer-right { gap: 20px; }
 
-        /* --- MAIN --- */
-        main { flex: 1; overflow-y: auto; background: var(--bg-main); display: flex; flex-direction: column; }
-        .view-section { flex: 1; padding: 50px 70px 30px 70px; display: none; animation: fadeIn 0.4s; }
-        .view-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .header-title { font-size: 3.2rem; font-weight: 900; letter-spacing: -3px; margin-bottom: 45px; }
-        .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; margin-bottom: 50px; }
-
-        .module-card { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-lg); cursor: pointer; transition: 0.3s; position: relative; }
-        .module-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-
-        /* ФУТЕР З КОЛЬОРОВИМИ АКЦЕНТАМИ */
-footer { 
-    position: fixed;
-    bottom: 0;
-    left: 280px; 
-    right: 0;
-    height: 60px;
-    padding: 0 40px;
-    background: rgba(5, 5, 5, 0.85); 
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-top: 1px solid rgba(0, 255, 200, 0.1); /* Ледь помітна лінія кольору акценту */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 999;
-}
-
-.footer-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.5px;
-}
-
-.footer-left .copy {
-    color: var(--text-low);
-}
-
-/* Індикатор статусу системи */
-.status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--accent);
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.status-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(1.2); }
-    100% { opacity: 1; transform: scale(1); }
-}
-
-.footer-right {
-    display: flex;
-    gap: 30px;
-}
-
-.footer-right a {
-    color: var(--text-mid);
-    text-decoration: none;
-    font-size: 11px;
-    font-weight: 700;
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-}
-
-/* Ефект підсвічування при наведенні */
-.footer-right a:hover {
-    color: #fff;
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-}
-
-/* Маленька рисочка під активним посиланням */
-.footer-right a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--accent);
-    transition: 0.3s;
-}
-
-.footer-right a:hover::after {
-    width: 100%;
-}
-
-        /* --- MODALS --- */
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.96); backdrop-filter: blur(15px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
-        .modal-body { background: var(--panel); border: 1px solid var(--border); width: 100%; max-width: 650px; border-radius: 28px; padding: 45px; position: relative; max-height: 85vh; overflow-y: auto; }
-        
-        .quiz-option { background: #151515; padding: 18px; border-radius: 15px; margin-top: 12px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
-        .quiz-option.correct { border-color: var(--success); color: var(--success); background: rgba(0,255,100,0.05); }
-        .quiz-option.wrong { border-color: var(--error); color: var(--error); background: rgba(255,59,59,0.05); }
-
-        .btn-primary { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 15px; font-weight: 900; cursor: pointer; width: 100%; transition: 0.3s; }
-        input { width: 100%; background: #151515; border: 1px solid var(--border); padding: 16px; border-radius: 12px; color: #fff; margin-bottom: 20px; }
-
-        #notify { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 12px 30px; border-radius: 40px; z-index: 10001; font-weight: 800; display: none; }
-        
-        .admin-fab { position: fixed; bottom: 100px; right: 35px; width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; color: #000; font-size: 24px; box-shadow: 0 0 30px var(--accent-glow); }
-        
-        .hidden { display: none !important; }
+        .modal-body { padding: 35px 20px; width: 92%; }
+        .admin-fab { bottom: 140px; right: 20px; width: 50px; height: 50px; }
+    }
     </style>
 </head>
 <body>
