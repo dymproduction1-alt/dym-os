@@ -53,37 +53,65 @@
         .module-card { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-lg); cursor: pointer; transition: 0.3s; position: relative; }
         .module-card:hover { border-color: var(--accent); transform: translateY(-5px); }
 
-/* ФІКСОВАНИЙ ГЛЯНЦЕВИЙ ФУТЕР */
+        /* ФУТЕР З КОЛЬОРОВИМИ АКЦЕНТАМИ */
 footer { 
     position: fixed;
     bottom: 0;
-    left: 280px; /* Ширина твого сайдбару */
+    left: 280px; 
     right: 0;
     height: 60px;
     padding: 0 40px;
-    background: rgba(5, 5, 5, 0.8); /* Напівпрозорий темний фон */
-    backdrop-filter: blur(12px); /* Ефект розмиття скла */
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Дуже тонка лінія зверху */
+    background: rgba(5, 5, 5, 0.85); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(0, 255, 200, 0.1); /* Ледь помітна лінія кольору акценту */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 999; /* Поверх усього контенту */
-    transition: all 0.3s ease;
+    z-index: 999;
 }
 
-/* Ліві та праві блоки всередині футера */
 .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
+    letter-spacing: 0.5px;
+}
+
+.footer-left .copy {
     color: var(--text-low);
-    letter-spacing: 1px;
+}
+
+/* Індикатор статусу системи */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    font-weight: 700;
     text-transform: uppercase;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .footer-right {
     display: flex;
-    gap: 25px;
+    gap: 30px;
 }
 
 .footer-right a {
@@ -91,31 +119,30 @@ footer {
     text-decoration: none;
     font-size: 11px;
     font-weight: 700;
-    transition: 0.2s;
-    letter-spacing: 0.5px;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
+/* Ефект підсвічування при наведенні */
 .footer-right a:hover {
-    color: var(--accent);
-    text-shadow: 0 0 10px var(--accent-glow);
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-/* ВАЖЛИВО: Додаємо відступ для секцій, щоб футер не закривав останню картку */
-.view-section { 
-    padding-bottom: 120px !important; 
+/* Маленька рисочка під активним посиланням */
+.footer-right a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: 0.3s;
 }
 
-/* Адаптація для маленьких екранів */
-@media (max-width: 900px) {
-    footer { 
-        left: 0; 
-        padding: 0 20px; 
-        flex-direction: column;
-        justify-content: center;
-        gap: 10px;
-        height: 80px;
-    }
-    .view-section { padding-bottom: 140px !important; }
+.footer-right a:hover::after {
+    width: 100%;
 }
 
         /* --- MODALS --- */
@@ -182,8 +209,15 @@ footer {
     </main>
 
     <footer>
-    <div>© 2026 DYM.ACADEMY. CREATED BY DYM PRODUCTION</div>
-    <div>
+    <div class="footer-left">
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>System Online</span>
+        </div>
+        <span class="copy">© 2026 DYM.ACADEMY // PRODUCTION OS</span>
+    </div>
+    
+    <div class="footer-right">
         <a href="https://t.me/Dym18441" target="_blank">SUPPORT</a>
         <a href="privacy.html">PRIVACY</a>
         <a href="terms.html">TERMS</a>
