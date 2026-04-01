@@ -53,10 +53,32 @@
         .module-card { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-lg); cursor: pointer; transition: 0.3s; position: relative; }
         .module-card:hover { border-color: var(--accent); transform: translateY(-5px); }
 
-        /* --- FOOTER --- */
-        footer { padding: 40px 70px; border-top: 1px solid var(--border); background: var(--bg-deep); display: flex; justify-content: space-between; align-items: center; color: var(--text-low); font-size: 11px; }
-        footer a { color: var(--text-low); text-decoration: none; margin-left: 20px; transition: 0.2s; }
-        footer a:hover { color: var(--accent); }
+        /* Оновлений футер: тепер він прикріплений до низу */
+footer { 
+    position: fixed;
+    bottom: 0;
+    left: 280px; /* Ширина твого сайдбару */
+    right: 0;
+    height: 60px; /* Фіксована висота */
+    padding: 0 70px; 
+    border-top: 1px solid var(--border); 
+    background: rgba(2, 2, 2, 0.8); /* Напівпрозорий фон */
+    backdrop-filter: blur(10px); /* Ефект розмиття скла */
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    z-index: 100; /* Щоб був поверх карток */
+}
+
+/* Важливо: додаємо відступ знизу для контенту, щоб футер не перекривав останній рядок уроків */
+.view-section { 
+    padding-bottom: 100px !important; 
+}
+
+/* Адаптація для мобілок (якщо сайдбар зникне або зміниться) */
+@media (max-width: 768px) {
+    footer { left: 0; padding: 0 20px; }
+}
 
         /* --- MODALS --- */
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.96); backdrop-filter: blur(15px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
@@ -119,16 +141,16 @@
             <h2 class="header-title">Portfolio<span>.</span></h2>
             <div id="tracks-grid" class="content-grid"></div>
         </section>
+    </main>
 
-        <footer>
+    <footer>
     <div>© 2026 DYM.ACADEMY. CREATED BY DYM PRODUCTION</div>
     <div>
         <a href="https://t.me/Dym18441" target="_blank">SUPPORT</a>
         <a href="privacy.html">PRIVACY</a>
         <a href="terms.html">TERMS</a>
     </div>
-        </footer>
-    </main>
+</footer>
 
     <div id="modal-reader" class="overlay">
         <div class="modal-body">
