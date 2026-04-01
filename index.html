@@ -3,248 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DYM // OS v9.5 - Production Suite</title>
+    <title>DYM.ACADEMY - Production OS</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278491022189698"
-     crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-deep: #020202;
-            --bg-main: #050505;
-            --sidebar: #080808;
-            --panel: #0c0c0c;
-            --card: #121212;
-            --accent: #00ffc8;
-            --accent-glow: rgba(0, 255, 200, 0.15);
-            --error: #ff3b3b;
-            --success: #00ff64;
-            --premium: #ffd700;
-            --text-high: #ffffff;
-            --text-mid: #a0a0a0;
-            --text-low: #444444;
-            --border: #1a1a1a;
-            --radius-lg: 20px;
-            --radius-md: 12px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-deep: #020202; --bg-main: #050505; --sidebar: #080808; --panel: #0c0c0c;
+            --card: #121212; --accent: #00ffc8; --accent-glow: rgba(0, 255, 200, 0.15);
+            --error: #ff3b3b; --success: #00ff64; --premium: #ffd700;
+            --text-high: #ffffff; --text-mid: #a0a0a0; --text-low: #444444;
+            --border: #1a1a1a; --radius-lg: 20px; --radius-md: 12px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        ::selection { background: var(--accent); color: #000; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: var(--bg-deep); color: var(--text-high); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             display: flex; height: 100vh; overflow: hidden; font-size: 13px;
         }
 
-        /* --- SYSTEM COMPONENTS --- */
-        #sys-loader {
-            position: fixed; inset: 0; background: var(--bg-deep); z-index: 20000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: 0.5s ease-out;
-        }
-        .loader-bar { width: 200px; height: 2px; background: #111; position: relative; overflow: hidden; margin-top: 25px; border-radius: 2px; }
-        .loader-bar::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: var(--accent); animation: load 2s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
-        @keyframes load { 100% { left: 100%; } }
-
-        #auth-gate {
-            position: fixed; inset: 0; background: var(--bg-deep); z-index: 10000;
-            display: none; align-items: center; justify-content: center;
-        }
-        .auth-box { 
-            background: var(--panel); padding: 50px 40px; border-radius: var(--radius-lg); 
-            border: 1px solid var(--border); width: 380px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        /* --- SIDEBAR NAVIGATION --- */
-        aside {
-            width: 280px; background: var(--sidebar); border-right: 1px solid var(--border);
-            padding: 40px 25px; display: flex; flex-direction: column; z-index: 100;
-        }
+        /* --- SIDEBAR --- */
+        aside { width: 280px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 40px 25px; display: flex; flex-direction: column; z-index: 10; }
         .brand { margin-bottom: 50px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .brand h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: -2px; }
         .brand .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 15px var(--accent); }
 
-        .nav-group { margin-bottom: 30px; }
-        .nav-label { font-size: 10px; font-weight: 800; color: var(--text-low); letter-spacing: 2px; margin-bottom: 15px; padding-left: 10px; }
-        
-        .nav-btn {
-            padding: 14px 18px; color: var(--text-mid); cursor: pointer; border-radius: var(--radius-md);
-            margin-bottom: 6px; font-weight: 600; display: flex; align-items: center; gap: 12px;
-            transition: var(--transition); border: 1px solid transparent;
-        }
-        .nav-btn:hover { background: rgba(255,255,255,0.03); color: #fff; transform: translateX(5px); }
-        .nav-btn.active { background: var(--accent-glow); color: var(--accent); border-color: rgba(0,255,200,0.1); }
+        .nav-btn { padding: 14px 18px; color: var(--text-mid); cursor: pointer; border-radius: var(--radius-md); margin-bottom: 6px; font-weight: 600; transition: 0.3s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.03); color: #fff; }
+        .nav-btn.active { background: var(--accent-glow); color: var(--accent); }
 
-        /* --- USER PROFILE HUB --- */
-        .user-hub { background: #0a0a0a; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; margin-top: auto; }
-        #pro-tag { 
-            font-size: 9px; font-weight: 800; color: var(--premium); border: 1px solid var(--premium); 
-            padding: 6px; border-radius: 6px; text-align: center; margin-bottom: 18px; 
-            cursor: pointer; transition: 0.3s; letter-spacing: 1px;
-        }
-        #pro-tag:hover { background: var(--premium); color: #000; }
+        .user-section { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+        .login-trigger { background: var(--accent); color: #000; padding: 14px; border-radius: var(--radius-md); text-align: center; font-weight: 800; cursor: pointer; transition: 0.3s; }
         
-        .xp-header { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700; margin-bottom: 10px; font-family: 'JetBrains Mono'; }
-        .xp-track { background: #151515; height: 6px; border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
-        #xp-fill { background: var(--accent); height: 100%; width: 0%; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: 0 0 12px var(--accent); }
-        
-        .user-data { display: flex; align-items: center; gap: 12px; }
-        .user-avatar { 
-            width: 40px; height: 40px; background: var(--accent); border-radius: 12px; 
-            display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900; font-size: 1.2rem;
-        }
+        .profile-card { background: #0a0a0a; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; display: none; }
+        .xp-bar { background: #151515; height: 6px; border-radius: 10px; overflow: hidden; margin: 12px 0; }
+        #xp-fill { background: var(--accent); height: 100%; width: 0%; transition: 1s; }
 
-        /* --- MAIN VIEWPORT --- */
-        main { flex: 1; overflow-y: auto; padding: 50px 70px; background: var(--bg-main); scroll-behavior: smooth; }
-        .view-section { display: none; animation: viewIn 0.5s ease forwards; }
+        /* --- MAIN --- */
+        main { flex: 1; overflow-y: auto; background: var(--bg-main); display: flex; flex-direction: column; }
+        .view-section { flex: 1; padding: 50px 70px 30px 70px; display: none; animation: fadeIn 0.4s; }
         .view-section.active { display: block; }
-        @keyframes viewIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .header-title { font-size: 3.2rem; font-weight: 900; letter-spacing: -3px; margin-bottom: 45px; }
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; margin-bottom: 50px; }
 
-        .header-title { font-size: 3.2rem; font-weight: 900; letter-spacing: -3px; margin-bottom: 40px; }
-        .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        .module-card { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-lg); cursor: pointer; transition: 0.3s; position: relative; }
+        .module-card:hover { border-color: var(--accent); transform: translateY(-5px); }
 
-        /* --- MODULE CARDS --- */
-        .module-card { 
-            background: var(--card); border: 1px solid var(--border); padding: 30px; 
-            border-radius: var(--radius-lg); cursor: pointer; transition: var(--transition); position: relative; 
-            display: flex; flex-direction: column; gap: 15px;
-        }
-        .module-card:hover { border-color: var(--accent); transform: translateY(-5px); background: #161616; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
-        .module-card.locked::after { 
-            content: '🔒 PRO ONLY'; position: absolute; top: 20px; right: 20px; 
-            font-size: 8px; color: var(--premium); font-weight: 900; letter-spacing: 1px;
-            background: rgba(255, 215, 0, 0.1); padding: 4px 8px; border-radius: 4px;
-        }
-        .card-tag { 
-            align-self: flex-start; font-family: 'JetBrains Mono'; font-size: 0.65rem; 
-            color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 6px; font-weight: 700; 
-        }
+        /* --- FOOTER --- */
+        footer { padding: 40px 70px; border-top: 1px solid var(--border); background: var(--bg-deep); display: flex; justify-content: space-between; align-items: center; color: var(--text-low); font-size: 11px; }
+        footer a { color: var(--text-low); text-decoration: none; margin-left: 20px; transition: 0.2s; }
+        footer a:hover { color: var(--accent); }
 
-        /* --- MODALS SYSTEM --- */
-        .overlay { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(15px); 
-            display: none; align-items: center; justify-content: center; z-index: 5000; padding: 25px; 
-        }
-        .modal-body { 
-            background: var(--panel); border: 1px solid var(--border); width: 100%; max-width: 650px; 
-            border-radius: 24px; padding: 50px; position: relative; max-height: 90vh; overflow-y: auto;
-            box-shadow: 0 30px 100px rgba(0,0,0,0.8);
-        }
-        .modal-close { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--text-low); font-size: 1.5rem; transition: 0.2s; }
-        .modal-close:hover { color: #fff; transform: rotate(90deg); }
-
-        .btn-action { 
-            background: var(--accent); color: #000; border: none; padding: 18px; 
-            border-radius: var(--radius-md); font-weight: 900; cursor: pointer; width: 100%; 
-            text-transform: uppercase; transition: var(--transition); margin-top: 15px; letter-spacing: 1px;
-        }
-        .btn-action:hover { opacity: 0.9; transform: scale(0.98); box-shadow: 0 0 20px var(--accent-glow); }
-        .btn-pro { background: var(--premium); }
-
-        /* --- QUIZ UI --- */
-        .quiz-option { 
-            background: #141414; border: 1px solid var(--border); padding: 20px; 
-            border-radius: var(--radius-md); margin-bottom: 12px; cursor: pointer; transition: 0.2s; font-weight: 600; 
-        }
-        .quiz-option:hover { border-color: var(--text-mid); background: #1a1a1a; }
+        /* --- MODALS --- */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.96); backdrop-filter: blur(15px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+        .modal-body { background: var(--panel); border: 1px solid var(--border); width: 100%; max-width: 650px; border-radius: 28px; padding: 45px; position: relative; max-height: 85vh; overflow-y: auto; }
+        
+        .quiz-option { background: #151515; padding: 18px; border-radius: 15px; margin-top: 12px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
         .quiz-option.correct { border-color: var(--success); color: var(--success); background: rgba(0,255,100,0.05); }
         .quiz-option.wrong { border-color: var(--error); color: var(--error); background: rgba(255,59,59,0.05); }
 
-        /* --- FORM ELEMENTS --- */
-        .form-input { 
-            width:100%; padding:16px; margin-bottom:20px; background:#080808; 
-            border:1px solid #222; color:#fff; border-radius: 10px; font-family: inherit; font-size: 1rem;
-        }
-        .form-input:focus { border-color: var(--accent); background: #000; }
-        .promo-input { font-family: 'JetBrains Mono'; text-align: center; font-size: 1.4rem; letter-spacing: 4px; color: var(--accent); font-weight: 700; }
+        .btn-primary { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 15px; font-weight: 900; cursor: pointer; width: 100%; transition: 0.3s; }
+        input { width: 100%; background: #151515; border: 1px solid var(--border); padding: 16px; border-radius: 12px; color: #fff; margin-bottom: 20px; }
 
-        /* --- NOTIFICATIONS --- */
-        #notify { 
-            position: fixed; bottom: 40px; right: 40px; background: var(--panel); 
-            border: 1px solid var(--accent); padding: 15px 35px; border-radius: 40px; 
-            font-size: 0.8rem; font-weight: 900; z-index: 10001; display: none; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6); animation: toastIn 0.3s ease;
-        }
-        @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        /* --- ADMIN TOOLS --- */
-        .admin-fab { 
-            position: fixed; bottom: 40px; left: 40px; width: 60px; height: 60px; 
-            background: var(--accent); border-radius: 50%; display: none; align-items: center; 
-            justify-content: center; font-size: 1.8rem; cursor: pointer; color: #000; z-index: 1000; 
-            transition: 0.4s; box-shadow: 0 10px 30px var(--accent-glow);
-        }
-        .admin-fab:hover { transform: rotate(180deg); scale: 1.1; }
-
+        #notify { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 12px 30px; border-radius: 40px; z-index: 10001; font-weight: 800; display: none; }
+        
+        .admin-fab { position: fixed; bottom: 100px; right: 35px; width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; color: #000; font-size: 24px; box-shadow: 0 0 30px var(--accent-glow); }
+        
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="sys-loader">
-        <h1 style="font-weight: 900; font-size: 2.8rem; letter-spacing: -3px;">DYM<span>.</span></h1>
-        <div class="loader-bar"></div>
-    </div>
+    <div id="notify">OS_NOTIFICATION</div>
 
-    <div id="notify">SYSTEM_READY</div>
-
-    <div id="auth-gate">
-        <div class="auth-box">
-            <h2 style="font-weight: 900; margin-bottom: 15px;"><DYM class="ACADEMY">DYM.ACADEMY</DYM></h2>
-            <p style="color: var(--text-mid); margin-bottom: 35px; font-size: 12px; line-height: 1.6;">Ввійдіть у систему для доступу до курсів та продакшн-лабораторії.</p>
-            <button class="btn-action" onclick="sysAuth()">Authorize with Google</button>
+    <aside>
+        <div class="brand" onclick="osSwitchView('academy')">
+            <h1>DYM</h1><div class="dot"></div>
         </div>
-    </div>
-
-    <aside id="os-sidebar" class="hidden">
-        <div class="brand" onclick="location.reload()">
-            <h1>DYM</h1>
-            <div class="dot"></div>
-        </div>
-        
-        <div class="nav-group">
-            <p class="nav-label">KNOWLEDGE</p>
-            <nav>
-                <div class="nav-btn active" data-v="academy" onclick="osSwitchView('academy')">🎓 Academy</div>
-                <div class="nav-btn" data-v="tracks" onclick="osSwitchView('tracks')">🎵 Portfolio</div>
-            </nav>
-        </div>
-
-        <div class="nav-group">
-            <p class="nav-label">TOOLS</p>
-            <nav>
-                <div class="nav-btn" data-v="lab" onclick="osSwitchView('lab')">🧪 The Lab</div>
-                <div class="nav-btn" data-v="services" onclick="osSwitchView('services')">💼 Services</div>
-            </nav>
-        </div>
-
-        <div class="user-hub">
-            <div id="pro-tag" onclick="osModal('modal-promo', true)">ACTIVATE VOUCHER</div>
-            <div class="xp-header">
-                <span id="os-lvl" style="color: var(--accent);">LVL 01</span>
-                <span id="os-xp">0 / 100 XP</span>
-            </div>
-            <div class="xp-track"><div id="xp-fill"></div></div>
-            <div class="user-data">
-                <div id="os-avatar" class="user-avatar">?</div>
-                <div>
-                    <div id="os-name" style="font-weight:800; font-size: 14px;">...</div>
-                    <div id="os-role" style="font-size:10px; color:var(--text-low); font-weight: 700;">STUDENT_PRODUCER</div>
+        <nav>
+            <div class="nav-btn active" data-v="academy" onclick="osSwitchView('academy')">🎓 Academy</div>
+            <div class="nav-btn" data-v="tracks" onclick="osSwitchView('tracks')">🎵 Portfolio</div>
+            <div class="nav-btn" data-v="lab" onclick="checkLabAccess()">🧪 The Lab</div>
+        </nav>
+        <div class="user-section">
+            <div id="btn-login" class="login-trigger" onclick="sysAuth()">SIGN IN WITH GOOGLE</div>
+            <div id="profile-box" class="profile-card">
+                <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono'; font-size:10px; margin-bottom:5px;">
+                    <span id="os-lvl">LVL 01</span>
+                    <span id="os-xp">0 / 100 XP</span>
+                </div>
+                <div class="xp-bar"><div id="xp-fill"></div></div>
+                <div id="pro-status" style="font-size:9px; color:var(--premium); font-weight:800; margin-bottom:15px; cursor:pointer;" onclick="osModal('modal-promo', true)">ACTIVATE PRO</div>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div id="os-avatar" style="width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; color:#000; font-weight:900;">?</div>
+                    <div>
+                        <div id="os-name" style="font-weight:700; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; max-width:120px;">Guest</div>
+                        <div onclick="sysLogout()" style="font-size:9px; color:var(--text-low); cursor:pointer;">LOGOUT</div>
+                    </div>
                 </div>
             </div>
-            <button onclick="sysLogout()" style="margin-top:20px; width:100%; background:none; border:none; color:#333; font-size:9px; cursor:pointer; font-weight: 800; letter-spacing: 1px;">TERMINATE_SESSION</button>
         </div>
     </aside>
 
-    <main id="os-main" class="hidden">
-        
+    <main>
         <section id="v-academy" class="view-section active">
             <h2 class="header-title">Academy<span>.</span></h2>
             <div id="academy-grid" class="content-grid"></div>
@@ -255,334 +120,167 @@
             <div id="tracks-grid" class="content-grid"></div>
         </section>
 
-        <section id="v-lab" class="view-section">
-            <h2 class="header-title">The Lab<span>.</span></h2>
-            <div class="content-grid">
-                <div class="module-card" onclick="checkProAccess()">
-                    <div class="card-tag" style="color:var(--premium); border-color:var(--premium);">PREMIUM TOOL</div>
-                    <h3>808 Master Generator</h3>
-                    <p style="color: var(--text-mid);">Створюй ідеальні суб-баси за допомогою ШІ алгоритмів.</p>
-                </div>
-                <div class="module-card" onclick="checkProAccess()">
-                    <div class="card-tag" style="color:var(--premium); border-color:var(--premium);">PREMIUM TOOL</div>
-                    <h3>Sample Cloud</h3>
-                    <p style="color: var(--text-mid);">Доступ до моєї приватної бібліотеки Trap & Drill семплів.</p>
-                </div>
+        <footer>
+            <div>© 2026 DYM.ACADEMY. CREATED BY DYM PRODUCTION</div>
+            <div>
+                <a href="https://t.me/Dym18441" target="_blank">SUPPORT</a>
+                <a href="#" onclick="alert('Privacy: Твій email використовується лише для збереження XP.')">PRIVACY</a>
             </div>
-        </section>
-
-        <section id="v-services" class="view-section">
-            <h2 class="header-title">Services<span>.</span></h2>
-            <div class="content-grid">
-                <div class="module-card" onclick="window.open('https://t.me/@Dym18441')">
-                    <div class="card-tag">OFFER</div>
-                    <h3>Mixing & Mastering</h3>
-                    <p style="color: var(--text-mid);">Зведення твого треку на професійному обладнанні (AT2020/UMC22).</p>
-                    <div style="font-weight: 900; color: var(--accent);">ВІД 500 UAH</div>
-                </div>
-                <div class="module-card" onclick="window.open('https://t.me/@Dym18441')">
-                    <div class="card-tag">OFFER</div>
-                    <h3>Custom Beatmaking</h3>
-                    <p style="color: var(--text-mid);">Ексклюзивний біт у стилі Travis Scott, Central Cee або Gunna.</p>
-                    <div style="font-weight: 900; color: var(--accent);">ВІД 1200 UAH</div>
-                </div>
-            </div>
-        </section>
+        </footer>
     </main>
 
     <div id="modal-reader" class="overlay">
         <div class="modal-body">
-            <span class="modal-close" onclick="osModal('modal-reader', false)">✕</span>
-            <div id="read-tag" class="card-tag">Lesson</div>
-            <h1 id="read-title" style="margin: 25px 0; font-size: 2.2rem; letter-spacing: -1px;">Title</h1>
-            <div id="read-body" style="white-space: pre-wrap; line-height: 1.9; color: var(--text-mid); margin-bottom: 50px; font-size: 1.1rem;"></div>
-            <button class="btn-action" id="quiz-btn">Пройти фінальний тест (+50 XP)</button>
-        </div>
-    </div>
-
-    <div id="modal-promo" class="overlay">
-        <div class="modal-body" style="text-align: center; max-width: 480px;">
-            <span class="modal-close" onclick="osModal('modal-promo', false)">✕</span>
-            <h2 style="font-size: 1.8rem; margin-bottom: 10px;">Активувати Доступ</h2>
-            <p style="color: var(--text-mid); font-size: 12px; margin-bottom: 30px;">Введіть ваш 12-значний код ваучера для активації PRO функцій.</p>
-            
-            <input type="text" id="promo-input" class="form-input promo-input" placeholder="DYM-XXXX-XXXX">
-            <button class="btn-action" onclick="activateVoucher()">ПІДТВЕРДИТИ АКТИВАЦІЮ</button>
-            
-            <div style="margin-top: 30px; padding: 20px; background: rgba(255, 215, 0, 0.03); border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.1);">
-                <p style="font-size: 11px; color: var(--text-low); line-height: 1.6;">Немає коду? Ви можете придбати його безпосередньо у <a href="https://t.me/dymovvova88" style="color: var(--premium); text-decoration: none; font-weight: 800;">DYM Production</a>.</p>
-            </div>
+            <span style="position:absolute; top:25px; right:30px; cursor:pointer; font-size:24px;" onclick="osModal('modal-reader', false)">✕</span>
+            <div id="read-tag" style="color:var(--accent); font-size:10px; font-weight:800; margin-bottom:12px;">UNIT_01</div>
+            <h2 id="read-title" style="margin-bottom:25px; font-size:2rem;">Lesson</h2>
+            <div id="read-body" style="color:var(--text-mid); line-height:1.8; margin-bottom:35px; white-space: pre-wrap;"></div>
+            <button id="quiz-btn" class="btn-primary">START KNOWLEDGE CHECK</button>
         </div>
     </div>
 
     <div id="modal-quiz" class="overlay">
-        <div class="modal-body" style="text-align: center;">
+        <div class="modal-body">
             <div id="quiz-active">
-                <p id="q-count" style="color:var(--accent); font-family: 'JetBrains Mono'; font-weight: 800;">QUESTION 1/1</p>
-                <h2 id="q-text" style="margin: 30px 0; font-size: 1.8rem;">Question</h2>
-                <div id="q-options" style="text-align: left;"></div>
+                <div id="q-count" style="color:var(--accent); font-size:10px; margin-bottom:15px;">QUESTION 1/1</div>
+                <h3 id="q-text" style="margin-bottom:30px;">...</h3>
+                <div id="q-options"></div>
             </div>
-            <div id="quiz-win" class="hidden">
-                <div style="font-size: 6rem; margin-bottom: 20px;">🎖️</div>
-                <h2 style="color:var(--success); font-size: 2rem; margin-bottom: 10px;">UNIT COMPLETED</h2>
-                <p style="color: var(--text-mid); margin-bottom: 40px;">Ви отримали +50 одиниць досвіду та закріпили знання.</p>
-                <button class="btn-action" onclick="location.reload()">ПОВЕРНУТИСЬ ДО ACADEMY</button>
+            <div id="quiz-win" class="hidden" style="text-align:center; padding:30px;">
+                <h2 style="color:var(--success); margin-bottom:15px;">COMPLETED</h2>
+                <p>+50 XP було додано до профілю.</p>
+                <button class="btn-primary" style="margin-top:35px;" onclick="osModal('modal-quiz', false)">DONE</button>
             </div>
         </div>
     </div>
 
-    <div id="modal-admin" class="overlay">
-        <div class="modal-body" style="max-width: 550px;">
-            <span class="modal-close" onclick="osModal('modal-admin', false)">✕</span>
-            <h3 style="margin-bottom:25px; font-size: 1.5rem; letter-spacing: -1px;">OS_CORE: Add Content</h3>
-            
-            <select id="adm-type" class="form-input">
-                <option value="lesson">New Academy Unit</option>
-                <option value="track">Portfolio Entry (Spotify)</option>
-            </select>
-            
-            <div style="margin-bottom:20px; display: flex; align-items: center; gap: 12px;">
-                <input type="checkbox" id="adm-premium" style="width:18px; height:18px; accent-color: var(--premium);"> 
-                <label style="color: var(--premium); font-weight: 800; font-size: 11px; letter-spacing: 1px;">PREMIUM CONTENT</label>
-            </div>
+    <div id="modal-promo" class="overlay">
+        <div class="modal-body" style="max-width:400px; text-align:center;">
+            <span style="position:absolute; top:25px; right:30px; cursor:pointer;" onclick="osModal('modal-promo', false)">✕</span>
+            <h2 style="margin-bottom:15px;">PRO VOUCHER</h2>
+            <input type="text" id="promo-input" placeholder="XXXX-XXXX-XXXX">
+            <button class="btn-primary" onclick="activateVoucher()">ACTIVATE</button>
+        </div>
+    </div>
 
-            <input type="text" id="adm-title" placeholder="Unit Title / Spotify URL" class="form-input">
-            <input type="text" id="adm-cat" placeholder="Domain (Mixing, Theory, Marketing)" class="form-input">
-            <textarea id="adm-body" placeholder="Main Content Markdown/Text" class="form-input" style="height:160px;"></textarea>
-            <textarea id="adm-quiz" placeholder='Quiz JSON: [{"q":"?", "a":["Ans1","Ans2"], "c":0}]' class="form-input" style="font-family: 'JetBrains Mono'; height: 90px; font-size: 12px;"></textarea>
-            
-            <button class="btn-action" onclick="osPushData()">DEPLOY TO DATABASE</button>
+    <div id="modal-admin" class="overlay">
+        <div class="modal-body">
+            <span style="position:absolute; top:25px; right:30px; cursor:pointer;" onclick="osModal('modal-admin', false)">✕</span>
+            <h2 style="margin-bottom:25px;">ADMIN_UPLOAD</h2>
+            <select id="adm-type" style="width:100%; padding:15px; background:#151515; color:#fff; border-radius:12px; border:1px solid var(--border); margin-bottom:15px;">
+                <option value="lesson">New Lesson</option>
+                <option value="track">Portfolio Track</option>
+            </select>
+            <input type="text" id="adm-title" placeholder="Title / Spotify URL">
+            <input type="text" id="adm-cat" placeholder="Category">
+            <textarea id="adm-body" rows="6" placeholder="Content" style="width:100%; background:#151515; border:1px solid var(--border); color:#fff; border-radius:12px; padding:15px; margin-bottom:15px;"></textarea>
+            <textarea id="adm-quiz" rows="3" placeholder='Quiz JSON: [{"q":"Text","a":["O1","O2"],"c":0}]' style="width:100%; background:#151515; border:1px solid var(--border); color:#fff; border-radius:12px; padding:15px; margin-bottom:15px;"></textarea>
+            <label style="display:flex; align-items:center; gap:10px; margin-bottom:25px; font-size:11px;">
+                <input type="checkbox" id="adm-premium" style="width:auto; margin:0;"> MARK AS PREMIUM
+            </label>
+            <button class="btn-primary" onclick="osPushData()">PUSH TO DATABASE</button>
         </div>
     </div>
 
     <div id="admin-fab" class="admin-fab" onclick="osModal('modal-admin', true)">+</div>
 
-    <footer style="padding: 20px; text-align: center; color: #666; font-size: 12px;">
-    <p>&copy; 2026 DYM.ACADEMY. All rights reserved.</p>
-    <p>
-        <a href="#" onclick="alert('Політика конфіденційності DYM.ACADEMY
-
-1. Загальні положення
-Ця Політика конфіденційності описує, як проект DYM.ACADEMY (далі — «Сайт») збирає, використовує та захищає інформацію користувачів. Використовуючи наш Сайт, ви погоджуєтесь із правилами, описаними в цій Політиці.
-
-2. Збір даних
-Ми збираємо наступну інформацію:
-
-Дані авторизації: При вході через Google ми отримуємо ваш Email та публічне ім'я для створення профілю.
-
-Технічні дані: Google AdSense та аналітичні сервіси можуть збирати дані про вашу IP-адресу, тип браузера та тривалість сесії за допомогою файлів cookie.
-
-Дані прогресу: Ми зберігаємо інформацію про пройдені вами уроки та активовані промокоди в базі даних Supabase.
-
-3. Використання даних
-Ваші дані використовуються виключно для:
-
-Надання доступу до PRO-функцій сайту.
-
-Відображення персоналізованої реклами через Google AdSense.
-
-Покращення контенту академії.
-
-4. Рекламні сервіси (Google AdSense)
-Сайт використовує Google AdSense для показу оголошень. Google може використовувати файли cookie (наприклад, DoubleClick) для показу реклами на основі ваших відвідувань цього та інших сайтів. Ви можете вимкнути персоналізовану рекламу в налаштуваннях свого Google-акаунта.
-
-5. Захист даних
-Ми використовуємо безпечні хмарні рішення (Supabase, Vercel) для захисту ваших даних від несанкціонованого доступу. Ми не продаємо і не передаємо ваші особисті дані третім особам.
-
-6. Контакти
-Якщо у вас є питання, пишіть адміністратору в Telegram: @Dym18441')" style="color: #00ffcc; text-decoration: none;">Privacy Policy</a> | 
-        <a href="https://t.me/@Dym18441" style="color: #00ffcc; text-decoration: none;">Contact Support</a>
-    </p>
-    </footer>
-
     <script>
-        // --- SYSTEM CONFIG ---
         const SB_URL = 'https://tskdzdaafenzassocitb.supabase.co';
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRza2R6ZGFhZmVuemFzc29jaXRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MTYwNDMsImV4cCI6MjA5MDM5MjA0M30.NbXt_fOPQby8otbjB0O_zHOJeFD5hu5yQoS32jSsqzs';
-        const MASTER_OVERRIDE = 'dymovvova88@gmail.com';
-
+        const MASTER = 'dymovvova88@gmail.com';
         const api = supabase.createClient(SB_URL, SB_KEY);
-        let user = null;
-        let xpTotal = 0;
-        let isPro = false;
+        
+        let user = null, xpTotal = 0, isPro = false;
 
-        // --- AUTH ENGINE ---
+        function osModal(id, s) { document.getElementById(id).style.display = s ? 'flex' : 'none'; }
+        function showToast(m) {
+            const t = document.getElementById('notify');
+            t.innerText = m; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
         async function sysAuth() { await api.auth.signInWithOAuth({ provider: 'google' }); }
         async function sysLogout() { await api.auth.signOut(); location.reload(); }
 
-        // --- BOOT SEQUENCE ---
         async function boot() {
+            await loadAcademy();
+            await loadTracks();
             const { data: { user: activeUser } } = await api.auth.getUser();
-            
             if (activeUser) {
                 user = activeUser;
-                
-                // Reveal UI
-                document.getElementById('os-sidebar').classList.remove('hidden');
-                document.getElementById('os-main').classList.remove('hidden');
-                document.getElementById('auth-gate').style.display = 'none';
-                
-                // Profile Init
+                document.getElementById('btn-login').style.display = 'none';
+                document.getElementById('profile-box').style.display = 'block';
                 document.getElementById('os-name').innerText = user.user_metadata.full_name || user.email;
                 document.getElementById('os-avatar').innerText = (user.user_metadata.full_name || user.email)[0].toUpperCase();
-                
-                // Admin Check
-                if (user.email === MASTER_OVERRIDE) {
-                    document.getElementById('admin-fab').style.display = 'flex';
-                }
-                
+                if(user.email === MASTER) document.getElementById('admin-fab').style.display = 'flex';
                 await syncProfile();
-                await loadAcademy();
-                await loadTracks();
-                
-                // Hide Loader
-                const loader = document.getElementById('sys-loader');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 500);
-                
-                showToast("OS_V9.5_LOADED");
-            } else {
-                document.getElementById('sys-loader').style.display = 'none';
-                document.getElementById('auth-gate').style.display = 'flex';
             }
-        }
-
-        // --- PROFILE & XP ENGINE ---
-        async function syncProfile() {
-    let { data: profile } = await api.from('profiles').select('*').eq('id', user.id).maybeSingle();
-    
-    if (profile) {
-        xpTotal = profile.xp || 0;
-        isPro = profile.is_pro || false;
-
-        const tag = document.getElementById('pro-tag');
-        const role = document.getElementById('os-role');
-
-        if (isPro) {
-            tag.innerText = "PRO_ACTIVE_ACCESS";
-            tag.style.color = "var(--accent)";
-            tag.style.borderColor = "var(--accent)";
-            role.innerText = "PRO_PRODUCER";
-            role.style.color = "var(--accent)";
-        } else {
-            tag.innerText = "ACTIVATE VOUCHER";
-            tag.style.color = "var(--premium)";
-            role.innerText = "STUDENT_PRODUCER";
-        }
-        updateXPUI();
+            try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+        console.error("AdSense error:", e);
     }
-}
+        }
+
+        async function syncProfile() {
+            let { data: p } = await api.from('profiles').select('*').eq('id', user.id).maybeSingle();
+            if (!p) {
+                const { data: newP } = await api.from('profiles').insert({ id: user.id, xp: 0, is_pro: false }).select().single();
+                p = newP;
+            }
+            xpTotal = p.xp || 0; isPro = p.is_pro || false; updateXPUI();
+        }
 
         function updateXPUI() {
-            const currentLevel = Math.floor(xpTotal / 100) + 1;
-            const xpInLevel = xpTotal % 100;
-            document.getElementById('os-lvl').innerText = `LVL ${currentLevel < 10 ? '0'+currentLevel : currentLevel}`;
-            document.getElementById('os-xp').innerText = `${xpInLevel} / 100 XP`;
-            document.getElementById('xp-fill').style.width = xpInLevel + '%';
+            const lvl = Math.floor(xpTotal / 100) + 1;
+            const xp = xpTotal % 100;
+            document.getElementById('os-lvl').innerText = `LVL ${lvl < 10 ? '0'+lvl : lvl}`;
+            document.getElementById('os-xp').innerText = `${xp} / 100 XP`;
+            document.getElementById('xp-fill').style.width = xp + '%';
+            document.getElementById('pro-status').innerText = isPro ? "PRO ACCOUNT ACTIVE" : "ACTIVATE PRO";
+            document.getElementById('pro-status').style.color = isPro ? "var(--accent)" : "var(--premium)";
         }
 
-        // --- CONTENT LOADER ---
         async function loadAcademy() {
             const { data: lessons } = await api.from('lessons').select('*').order('id', {ascending: true});
-            const grid = document.getElementById('academy-grid');
-            grid.innerHTML = '';
-            
+            const grid = document.getElementById('academy-grid'); grid.innerHTML = '';
             lessons?.forEach(l => {
                 const card = document.createElement('div');
                 card.className = `module-card ${l.is_premium && !isPro ? 'locked' : ''}`;
-                card.innerHTML = `
-                    <div class="card-tag">${l.category}</div>
-                    <h3>${l.title}</h3>
-                    <p style="color: var(--text-low); font-size: 11px;">${l.content.substring(0, 75)}...</p>
-                `;
-                card.onclick = () => {
-                    if (l.is_premium && !isPro) osModal('modal-promo', true);
-                    else openLesson(l);
-                };
+                card.innerHTML = `<div style="font-size:9px; color:var(--accent); font-weight:800;">${l.category}</div><h3 style="margin:15px 0;">${l.title}</h3><p style="color:var(--text-low); font-size:11px;">${l.content.substring(0, 90)}...</p>`;
+                card.onclick = () => openLesson(l);
                 grid.appendChild(card);
             });
         }
 
         function openLesson(l) {
+            if (l.is_premium && !isPro) { showToast("PRO ONLY"); osModal('modal-promo', true); return; }
             document.getElementById('read-title').innerText = l.title;
             document.getElementById('read-body').innerText = l.content;
-            document.getElementById('read-tag').innerText = l.category;
-            document.getElementById('quiz-btn').onclick = () => startQuiz(l.id);
+            document.getElementById('read-tag').innerText = l.category.toUpperCase();
+            document.getElementById('quiz-btn').onclick = () => user ? startQuiz(l.id) : showToast("SIGN IN FIRST");
             osModal('modal-reader', true);
         }
 
-        // --- VOUCHER ACTIVATION ENGINE ---
-        async function activateVoucher() {
-    const codeInput = document.getElementById('promo-input').value.trim();
-    if (!codeInput) return showToast("ERROR: EMPTY_CODE");
-
-    showToast("VERIFYING_VOUCHER...");
-
-    // 1. Перевірка ваучера
-    const { data: voucher, error } = await api.from('promocodes')
-        .select('*')
-        .eq('code', codeInput)
-        .eq('is_used', false)
-        .maybeSingle();
-
-    if (voucher) {
-        // 2. Позначаємо як використаний
-        await api.from('promocodes')
-            .update({ is_used: true, activated_by: user.id, activated_at: new Date() })
-            .eq('code', codeInput);
-
-        // 3. ОНОВЛЮЄМО СТАТУС КОРИСТУВАЧА
-        const { error: updErr } = await api.from('profiles')
-            .update({ is_pro: true })
-            .eq('id', user.id);
-        
-        if (updErr) return showToast("UPDATE_ERROR");
-
-        // 4. ПРИМУСОВЕ ОНОВЛЕННЯ ІНТЕРФЕЙСУ БЕЗ ПЕРЕЗАВАНТАЖЕННЯ
-        isPro = true; // Змінюємо локальну змінну
-        syncProfile(); // Перезапускаємо візуалізацію профілю
-        loadAcademy(); // Перезавантажуємо список уроків (щоб прибрати замки)
-        
-        osModal('modal-promo', false); // Закриваємо вікно
-        showToast("VOUCHER_ACTIVATED: PRO_UNLOCKED");
-    } else {
-        showToast("INVALID_OR_EXPIRED_VOUCHER");
-    }
-}
-
-        // --- QUIZ SYSTEM ---
         async function startQuiz(lid) {
             const { data: qz } = await api.from('quizzes').select('*').eq('lesson_id', lid).maybeSingle();
-            if(!qz) return showToast("NO_QUIZ_IN_THIS_UNIT");
-            
-            osModal('modal-reader', false);
-            osModal('modal-quiz', true);
-            
+            if(!qz) return showToast("QUIZ_NOT_AVAILABLE");
+            osModal('modal-reader', false); osModal('modal-quiz', true);
+            document.getElementById('quiz-active').classList.remove('hidden');
+            document.getElementById('quiz-win').classList.add('hidden');
             let step = 0;
-            const qArr = qz.questions;
-
             const render = () => {
-                const q = qArr[step];
-                document.getElementById('q-count').innerText = `QUESTION ${step + 1}/${qArr.length}`;
+                const q = qz.questions[step];
+                document.getElementById('q-count').innerText = `QUESTION ${step + 1}/${qz.questions.length}`;
                 document.getElementById('q-text').innerText = q.q;
-                
-                const optBox = document.getElementById('q-options');
-                optBox.innerHTML = '';
-                
+                const optBox = document.getElementById('q-options'); optBox.innerHTML = '';
                 q.a.forEach((opt, i) => {
-                    const b = document.createElement('div');
-                    b.className = 'quiz-option';
-                    b.innerText = opt;
+                    const b = document.createElement('div'); b.className = 'quiz-option'; b.innerText = opt;
                     b.onclick = () => {
                         if (i === q.c) {
-                            b.classList.add('correct');
-                            step++;
-                            setTimeout(() => step < qArr.length ? render() : finishQuiz(), 700);
-                        } else {
-                            b.classList.add('wrong');
-                            showToast("INCORRECT_ANSWER");
-                            setTimeout(() => osModal('modal-quiz', false), 1000);
-                        }
+                            b.classList.add('correct'); step++;
+                            setTimeout(() => step < qz.questions.length ? render() : finishQuiz(), 500);
+                        } else b.classList.add('wrong');
                     };
                     optBox.appendChild(b);
                 });
@@ -593,74 +291,57 @@
         async function finishQuiz() {
             document.getElementById('quiz-active').classList.add('hidden');
             document.getElementById('quiz-win').classList.remove('hidden');
-            xpTotal += 50;
-            await api.from('profiles').update({ xp: xpTotal }).eq('id', user.id);
-            updateXPUI();
+            xpTotal += 50; await api.from('profiles').update({ xp: xpTotal }).eq('id', user.id); updateXPUI();
         }
 
-        // --- PORTFOLIO ENGINE ---
         async function loadTracks() {
             const { data } = await api.from('tracks').select('*').order('id', {ascending: false});
-            const grid = document.getElementById('tracks-grid');
-            grid.innerHTML = '';
-            
+            const grid = document.getElementById('tracks-grid'); grid.innerHTML = '';
             data?.forEach(t => {
-                const spId = t.url.split('/').pop().split('?')[0];
+                const id = t.url.split('/').pop().split('?')[0];
                 const box = document.createElement('div');
-                box.innerHTML = `
-                    <iframe src="https://open.spotify.com/embed/track/${spId}?utm_source=generator&theme=0" 
-                    width="100%" height="152" frameBorder="0" allow="encrypted-media" style="border-radius:12px; background: #000;"></iframe>
-                `;
+                box.innerHTML = `<iframe src="https://open.spotify.com/embed/track/${id}" width="100%" height="152" frameBorder="0" allow="encrypted-media" style="border-radius:12px;"></iframe>`;
                 grid.appendChild(box);
             });
         }
 
-        // --- ADMIN: DATA DEPLOY ---
         async function osPushData() {
             const type = document.getElementById('adm-type').value;
             const title = document.getElementById('adm-title').value;
             const cat = document.getElementById('adm-cat').value;
             const body = document.getElementById('adm-body').value;
-            const quizStr = document.getElementById('adm-quiz').value;
-            const isPrem = document.getElementById('adm-premium').checked;
-
-            try {
-                if (type === 'lesson') {
-                    const { data: lesson, error } = await api.from('lessons').insert({
-                        title, category: cat, content: body, is_premium: isPrem
-                    }).select().single();
-                    if (error) throw error;
-                    
-                    if (quizStr) {
-                        await api.from('quizzes').insert({
-                            lesson_id: lesson.id, questions: JSON.parse(quizStr)
-                        });
-                    }
-                } else {
-                    await api.from('tracks').insert({ url: title });
-                }
-                showToast("DEPLOY_SUCCESSFUL");
-                location.reload();
-            } catch (err) {
-                console.error(err);
-                showToast("SYNC_ERROR: " + err.message);
-            }
+            const qStr = document.getElementById('adm-quiz').value;
+            const isP = document.getElementById('adm-premium').checked;
+            if(type === 'lesson') {
+                const { data: l } = await api.from('lessons').insert({ title, category: cat, content: body, is_premium: isP }).select().single();
+                if(qStr && l) await api.from('quizzes').insert({ lesson_id: l.id, questions: JSON.parse(qStr) });
+            } else await api.from('tracks').insert({ url: title });
+            showToast("DEPLOYED"); location.reload();
         }
 
-        // --- UTILS ---
-        function checkProAccess() { if(!isPro) osModal('modal-promo', true); else showToast("TOOL_INITIALIZED"); }
-        function osModal(id, s) { document.getElementById(id).style.display = s ? 'flex' : 'none'; }
+        async function activateVoucher() {
+            const code = document.getElementById('promo-input').value.trim();
+            if(!user) return showToast("SIGN IN FIRST");
+            const { data: v } = await api.from('promocodes').select('*').eq('code', code).eq('is_used', false).maybeSingle();
+            if(v) {
+                await api.from('promocodes').update({ is_used: true, activated_by: user.id }).eq('code', code);
+                await api.from('profiles').update({ is_pro: true }).eq('id', user.id);
+                isPro = true; updateXPUI(); loadAcademy(); osModal('modal-promo', false);
+                showToast("PRO_UNLOCKED");
+            } else showToast("INVALID_KEY");
+        }
+
         function osSwitchView(v) {
             document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('v-' + v).classList.add('active');
-            document.querySelector(`[data-v="${v}"]`).classList.add('active');
+            document.getElementById('v-'+v).classList.add('active');
+            const targetBtn = document.querySelector(`[data-v="${v}"]`);
+            if(targetBtn) targetBtn.classList.add('active');
         }
-        function showToast(m) {
-            const t = document.getElementById('notify');
-            t.innerText = m;
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 4000);
+
+        function checkLabAccess() {
+            if(!user) { showToast("SIGN IN FIRST"); return; }
+            isPro ? showToast("LAB_INITIALIZING...") : osModal('modal-promo', true);
         }
 
         window.onload = boot;
