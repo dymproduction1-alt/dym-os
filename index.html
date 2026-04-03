@@ -231,6 +231,7 @@
             <div class="nav-btn active" data-v="academy" onclick="osSwitchView('academy')">🎓 Academy</div>
             <div class="nav-btn" data-v="tracks" onclick="osSwitchView('tracks')">🎵 Portfolio</div>
             <div class="nav-btn" data-v="lab" onclick="checkLabAccess()">🧪 The Lab</div>
+            <div class="nav-btn" id="nav-rank" onclick="osSwitchView('ranking')">🏆 Ranking</div>
         </nav>
         <div class="user-section">
             <div id="btn-login" class="login-trigger" onclick="sysAuth()">SIGN IN WITH GOOGLE</div>
@@ -370,6 +371,26 @@
 </div>
             </div>
         </section>
+
+        <!-- SECTION: RANKING -->
+<section id="v-ranking" class="view-section">
+    <h2 class="header-title">Top Producers<span>.</span></h2>
+    <div style="background: var(--panel); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead style="background: rgba(255,255,255,0.02); color: var(--text-low); font-size: 10px;">
+                <tr>
+                    <th style="padding: 20px;">RANK</th>
+                    <th>PRODUCER</th>
+                    <th>LEVEL</th>
+                    <th style="padding: 20px;">EXPERIENCE</th>
+                </tr>
+            </thead>
+            <tbody id="rank-table-body">
+                <!-- Сюди JS підтягне дані з Supabase -->
+            </tbody>
+        </table>
+    </div>
+</section>
     </main>
 
     <footer>
@@ -743,6 +764,24 @@ setTimeout(updateScale, 500);
         infoDisplay.style.color = 'var(--text-low)';
     }
 });
+
+        async function loadRanking() {
+    const { data: tops } = await api.from('profiles').select('id, xp, is_pro').order('xp', {ascending: false}).limit(10);
+    const tbody = document.getElementById('rank-table-body');
+    tbody.innerHTML = '';
+
+    tops?.forEach((p, index) => {
+        const row = document.createElement('tr');
+        row.style.borderBottom = "1px solid var(--border)";
+        row.innerHTML = `
+            <td style="padding: 20px; font-weight: 800; color: ${index < 3 ? 'var(--accent)' : 'var(--text-low)'}">#${index + 1}</td>
+            <td style="font-weight: 600;">USER_${p.id.substring(0,5)} ${p.is_pro ? '⭐' : ''}</td>
+            <td>LVL ${Math.floor(p.xp / 100) + 1}</td>
+            <td style="padding: 20px; font-family: 'JetBrains Mono'">${p.xp} XP</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
 
         window.onload = boot;
     </script>
