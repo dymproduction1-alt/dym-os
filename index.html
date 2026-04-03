@@ -349,6 +349,25 @@
         <!-- Ноти будуть тут -->
     </div>
 </div>
+
+                <!-- SAMPLE PITCH SHIFTER -->
+<div class="module-card" style="cursor: default;">
+    <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 20px;">UTILITY_04</div>
+    <h3 style="margin-bottom: 10px;">PITCH / TIME CALC</h3>
+    
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+        <div>
+            <p style="font-size: 10px; color: var(--text-low); margin-bottom: 5px;">SHIFT (SEMITONES)</p>
+            <input type="number" id="pitch-shift" value="0" step="1" style="text-align: center; color: var(--accent); border-color: var(--accent-glow);">
+        </div>
+        
+        <div style="background: rgba(0,255,200,0.05); padding: 15px; border-radius: 12px; border: 1px dashed var(--accent-glow);">
+            <div style="font-size: 9px; color: var(--text-mid); margin-bottom: 5px;">NEW SPEED / LENGTH:</div>
+            <div id="pitch-res" style="font-size: 1.5rem; font-weight: 800; color: var(--accent);">100%</div>
+            <p id="pitch-info" style="font-size: 10px; color: var(--text-low); margin-top: 5px;">Original speed</p>
+        </div>
+    </div>
+</div>
             </div>
         </section>
     </main>
@@ -700,6 +719,30 @@ document.getElementById('scale-type').addEventListener('change', updateScale);
 
 // Ініціалізація при завантаженні
 setTimeout(updateScale, 500);
+
+        document.getElementById('pitch-shift')?.addEventListener('input', function(e) {
+    const semitones = parseFloat(e.target.value) || 0;
+    
+    // Формула зміни швидкості: Speed = 2^(semitones/12)
+    const multiplier = Math.pow(2, semitones / 12);
+    const percentage = (multiplier * 100).toFixed(2);
+    
+    const resDisplay = document.getElementById('pitch-res');
+    const infoDisplay = document.getElementById('pitch-info');
+    
+    resDisplay.innerText = `${percentage}%`;
+    
+    if (semitones > 0) {
+        infoDisplay.innerText = `Семпл стане коротшим та швидшим.`;
+        infoDisplay.style.color = 'var(--success)';
+    } else if (semitones < 0) {
+        infoDisplay.innerText = `Семпл стане довшим та повільнішим.`;
+        infoDisplay.style.color = 'var(--error)';
+    } else {
+        infoDisplay.innerText = `Original speed`;
+        infoDisplay.style.color = 'var(--text-low)';
+    }
+});
 
         window.onload = boot;
     </script>
