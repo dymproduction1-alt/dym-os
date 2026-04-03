@@ -209,6 +209,14 @@
         .modal-body { padding: 35px 20px; width: 92%; }
         .admin-fab { bottom: 140px; right: 20px; width: 50px; height: 50px; }
     }
+
+    #tap-btn:active {
+        transform: scale(0.9);
+        background: var(--accent);
+        color: #000;
+        box-shadow: 0 0 30px var(--accent);
+    }
+    #bpm-display { transition: opacity 0.1s; }
     </style>
 </head>
 <body>
@@ -253,6 +261,34 @@
         <section id="v-tracks" class="view-section">
             <h2 class="header-title">Portfolio<span>.</span></h2>
             <div id="tracks-grid" class="content-grid"></div>
+        </section>
+        <!-- SECTION: THE LAB -->
+        <section id="v-lab" class="view-section">
+            <h2 class="header-title">The Lab<span>.</span></h2>
+            
+            <div class="content-grid">
+                <!-- BPM DETECTOR CARD -->
+                <div class="module-card" style="cursor: default; text-align: center; padding: 40px;">
+                    <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 20px;">UTILITY_01</div>
+                    <h3 style="margin-bottom: 10px;">BPM DETECTOR</h3>
+                    
+                    <div id="bpm-display" style="font-size: 5rem; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); margin: 20px 0; font-family: 'JetBrains Mono', monospace;">
+                        000
+                    </div>
+
+                    <button id="tap-btn" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent); background: transparent; color: var(--accent); font-weight: 800; cursor: pointer; transition: 0.2s; outline: none; box-shadow: 0 0 15px var(--accent-glow);">
+                        TAP
+                    </button>
+
+                    <div style="margin-top: 25px; display: flex; justify-content: center; gap: 20px; font-size: 11px; color: var(--text-mid);">
+                        <span id="tap-count">TAPS: 0</span>
+                        <span onclick="resetBPM()" style="cursor:pointer; color: var(--error);">[ RESET ]</span>
+                    </div>
+                    <p style="margin-top: 20px; font-size: 10px; color: var(--text-low);">Клікай мишкою або тисни SPACE в ритм</p>
+                </div>
+
+                <!-- Тут в майбутньому будуть інші інструменти лабораторії -->
+            </div>
         </section>
     </main>
 
@@ -485,7 +521,61 @@
 
         function checkLabAccess() {
             if(!user) { showToast("SIGN IN FIRST"); return; }
-            isPro ? showToast("LAB_INITIALIZING...") : osModal('modal-promo', true);
+            if(isPro) {
+                osSwitchView('lab');
+            } else {
+                osModal('modal-promo', true);
+            }
+        }
+
+        let tapTimes = [];
+        
+        // Обробка натискання кнопки
+        document.addEventListener('mousedown', function(e) {
+            if (e.target.id === 'tap-btn') processTap();
+        });
+
+        // Обробка пробілу
+        window.addEventListener('keydown', function(e) {
+            if (e.code === "Space" && document.getElementById('v-lab').classList.contains('active')) {
+                e.preventDefault();
+                processTap();
+            }
+        });
+
+        function processTap() {
+            const now = Date.now();
+            const display = document.getElementById('bpm-display');
+            const count = document.getElementById('tap-count');
+
+            if (tapTimes.length > 0 && now - tapTimes[tapTimes.length - 1] > 2000) {
+                tapTimes = [];
+            }
+
+            tapTimes.push(now);
+
+            if (tapTimes.length > 1) {
+                const intervals = [];
+                for (let i = 1; i < tapTimes.length; i++) {
+                    intervals.push(tapTimes[i] - tapTimes[i - 1]);
+                }
+                const avg = intervals.reduce((a, b) => a + b) / intervals.length;
+                const bpm = Math.round(60000 / avg);
+                
+                display.innerText = bpm.toString().padStart(3, '0');
+                count.innerText = `TAPS: ${tapTimes.length}`;
+            }
+
+            // Візуальний ефект
+            display.style.opacity = '0.3';
+            setTimeout(() => display.style.opacity = '1', 50);
+        }
+
+        function resetBPM() {
+            tapTimes = [];
+            document.getElementById('bpm-display').innerText = "000";
+            document.getElementById('tap-count').innerText = "TAPS: 0";
+            showToast("BPM_CLEARED");
         }
 
         window.onload = boot;
