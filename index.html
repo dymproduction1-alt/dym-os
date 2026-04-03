@@ -288,6 +288,36 @@
                 </div>
 
                 <!-- Тут в майбутньому будуть інші інструменти лабораторії -->
+
+                <!-- DELAY CALCULATOR CARD -->
+<div class="module-card" style="cursor: default;">
+    <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 20px;">UTILITY_02</div>
+    <h3 style="margin-bottom: 10px;">DELAY TIME CALC</h3>
+    
+    <div style="margin-bottom: 20px;">
+        <input type="number" id="calc-bpm" value="120" style="text-align: center; font-size: 1.5rem; color: var(--accent); border-color: var(--accent-glow); margin-bottom: 10px;">
+        <p style="font-size: 10px; color: var(--text-low);">Введи BPM для розрахунку MS</p>
+    </div>
+
+    <div id="delay-results" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: 'JetBrains Mono', monospace;">
+        <div class="res-box" style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;">
+            <div style="font-size: 9px; color: var(--text-mid);">1/4 NOTE</div>
+            <div id="ms-1-4" style="color: var(--accent);">500 ms</div>
+        </div>
+        <div class="res-box" style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;">
+            <div style="font-size: 9px; color: var(--text-mid);">1/8 NOTE</div>
+            <div id="ms-1-8" style="color: var(--accent);">250 ms</div>
+        </div>
+        <div class="res-box" style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;">
+            <div style="font-size: 9px; color: var(--text-mid);">1/16 NOTE</div>
+            <div id="ms-1-16" style="color: var(--accent);">125 ms</div>
+        </div>
+        <div class="res-box" style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;">
+            <div style="font-size: 9px; color: var(--text-mid);">1/32 NOTE</div>
+            <div id="ms-1-32" style="color: var(--accent);">62 ms</div>
+        </div>
+    </div>
+</div>
             </div>
         </section>
     </main>
@@ -577,6 +607,27 @@
             document.getElementById('tap-count').innerText = "TAPS: 0";
             showToast("BPM_CLEARED");
         }
+
+        // Функція розрахунку Delay
+function updateDelayCalcs(bpm) {
+    if (!bpm || bpm <= 0) return;
+    
+    const msQuarter = (60000 / bpm).toFixed(0);
+    document.getElementById('ms-1-4').innerText = `${msQuarter} ms`;
+    document.getElementById('ms-1-8').innerText = `${(msQuarter / 2).toFixed(0)} ms`;
+    document.getElementById('ms-1-16').innerText = `${(msQuarter / 4).toFixed(0)} ms`;
+    document.getElementById('ms-1-32').innerText = `${(msQuarter / 8).toFixed(0)} ms`;
+}
+
+// Слухач для інпуту калькулятора
+document.getElementById('calc-bpm')?.addEventListener('input', (e) => {
+    updateDelayCalcs(e.target.value);
+});
+
+// Зв'язок з BPM Detector: онови функцію processTap(), щоб вона передавала значення
+// Знайди в своєму коді рядок, де рахується bpm, і додай туди:
+// updateDelayCalcs(bpm);
+// document.getElementById('calc-bpm').value = bpm;
 
         window.onload = boot;
     </script>
