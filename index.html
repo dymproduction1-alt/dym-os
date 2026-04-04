@@ -235,6 +235,41 @@
             <div class="nav-btn" data-v="tracks" onclick="osSwitchView('tracks')">🎵 Portfolio</div>
             <div class="nav-btn" data-v="lab" onclick="checkLabAccess()">🧪 The Lab</div>
             <div class="nav-btn" id="nav-rank" onclick="osSwitchView('ranking')">🏆 Ranking</div>
+            <div id="install-btn" class="nav-btn" style="display: none; color: var(--accent); border: 1px solid var(--accent); margin-top: 20px;">
+                📲 INSTALL APP
+            </div>
+
+            <section id="v-battle" class="view-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 class="header-title" style="margin: 0;">Current Battle<span>.</span></h2>
+        <div id="battle-timer" style="font-family: 'JetBrains Mono'; color: var(--accent); background: var(--accent-glow); padding: 5px 15px; border-radius: 20px; font-size: 12px; border: 1px solid var(--accent);">
+            ENDS IN: 04D 12H 30M
+        </div>
+    </div>
+
+    <div class="module-card" style="border-style: dashed; background: transparent;">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: center;">
+            <div style="text-align: center;">
+                <div style="width: 120px; height: 120px; background: var(--panel); border-radius: 15px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 1px solid var(--border);">🎹</div>
+                <button class="btn-primary" style="width: 100%;">DOWNLOAD SAMPLE</button>
+            </div>
+            
+            <div>
+                <h3 style="color: var(--accent);">BATTLE #01: DARK TRAP</h3>
+                <p style="font-size: 12px; color: var(--text-mid); margin: 10px 0;">
+                    Правила: Використовуй цей семпл як основу. Темп будь-який. Жанр: Dark Trap / Drill. 
+                    Переможець отримає +500 XP та статус PRO на місяць.
+                </p>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn-secondary" style="flex: 1;">SUBMIT YOUR BEAT</button>
+                    <button class="btn-secondary" style="flex: 1; border-color: var(--text-low); color: var(--text-low);">VIEW ENTRIES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+            
         </nav>
         <div class="user-section">
             <div id="btn-login" class="login-trigger" onclick="sysAuth()">SIGN IN WITH GOOGLE</div>
@@ -396,40 +431,10 @@
 </section>
         <nav>
             <!-- SECTION: BEAT BATTLE -->
-<section id="v-battle" class="view-section">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <h2 class="header-title" style="margin: 0;">Current Battle<span>.</span></h2>
-        <div id="battle-timer" style="font-family: 'JetBrains Mono'; color: var(--accent); background: var(--accent-glow); padding: 5px 15px; border-radius: 20px; font-size: 12px; border: 1px solid var(--accent);">
-            ENDS IN: 04D 12H 30M
-        </div>
-    </div>
 
-    <div class="module-card" style="border-style: dashed; background: transparent;">
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: center;">
-            <div style="text-align: center;">
-                <div style="width: 120px; height: 120px; background: var(--panel); border-radius: 15px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 1px solid var(--border);">🎹</div>
-                <button class="btn-primary" style="width: 100%;">DOWNLOAD SAMPLE</button>
-            </div>
-            
-            <div>
-                <h3 style="color: var(--accent);">BATTLE #01: DARK TRAP</h3>
-                <p style="font-size: 12px; color: var(--text-mid); margin: 10px 0;">
-                    Правила: Використовуй цей семпл як основу. Темп будь-який. Жанр: Dark Trap / Drill. 
-                    Переможець отримає +500 XP та статус PRO на місяць.
-                </p>
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button class="btn-secondary" style="flex: 1;">SUBMIT YOUR BEAT</button>
-                    <button class="btn-secondary" style="flex: 1; border-color: var(--text-low); color: var(--text-low);">VIEW ENTRIES</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
         </nav>
 
-        <div id="install-btn" class="nav-btn" style="display: none; color: var(--accent); border: 1px solid var(--accent); margin-top: 20px;">
-    📲 INSTALL APP
-        </div>
+        
     </main>
 
     <footer>
