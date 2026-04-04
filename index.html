@@ -13,6 +13,9 @@
 </script>
 
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#00ffc8">
+    <link rel="apple-touch-icon" href="icon-192.png">
     
     <style>
     :root {
@@ -423,6 +426,10 @@
     </div>
 </section>
         </nav>
+
+        <div id="install-btn" class="nav-btn" style="display: none; color: var(--accent); border: 1px solid var(--accent); margin-top: 20px;">
+    📲 INSTALL APP
+        </div>
     </main>
 
     <footer>
@@ -837,6 +844,34 @@ setTimeout(updateScale, 500);
 setInterval(updateBattleTimer, 60000);
 updateBattleTimer();
 
+        if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW Registered'))
+            .catch(err => console.log('SW Error: ', err));
+    });
+}
+
+
+        let deferredPrompt;
+const installBtn = document.getElementById('install-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'block'; // Показуємо кнопку, якщо встановлення можливе
+});
+
+installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            installBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+    }
+});
         window.onload = boot;
     </script>
 </body>
