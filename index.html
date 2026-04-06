@@ -1,58 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Course",
-  "name": "Музичне виробництво від DYM ACADEMY",
-  "description": "Професійне навчання створенню бітів, зведенню та мастерингу в FL Studio.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "DYM ACADEMY",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://dym-os.vercel.app/logo.png"
-    }
-  },
-  "provider": {
-    "@type": "Organization",
-    "name": "DYM ACADEMY",
-    "sameAs": "https://dym-os.vercel.app"
-  }
-}
-</script>
-
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "DYM Production Services",
-  "image": "https://dym-os.vercel.app/services-preview.jpg",
-  "description": "Послуги зведення та мастерингу треків.",
-  "brand": {
-    "@type": "Brand",
-    "name": "DYM Prod."
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5",
-    "bestRating": "5",
-    "worstRating": "1",
-    "reviewCount": "24"
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "https://dym-os.vercel.app",
-    "priceCurrency": "USD",
-    "price": "20.00",
-    "priceValidUntil": "2026-12-31",
-    "availability": "https://schema.org/InStock",
-    "itemCondition": "https://schema.org/NewCondition"
-  }
-}
-</script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -280,6 +228,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         box-shadow: 0 0 30px var(--accent);
     }
     #bpm-display { transition: opacity 0.1s; }
+
+    #v-services.view-section {
+    width: 100%;
+    align-self: flex-start; /* Притискає до верху */
+}
     </style>
 </head>
 <body>
@@ -299,9 +252,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="nav-btn" data-v="tracks" onclick="osSwitchView('tracks')">🎵 Portfolio</div>
             <div class="nav-btn" data-v="lab" onclick="checkLabAccess()">🧪 The Lab</div>
             <div class="nav-btn" id="nav-rank" onclick="osSwitchView('ranking')">🏆 Ranking</div>
-            <div id="install-btn" class="nav-btn" style="display: none; color: var(--accent); border: 1px solid var(--accent); margin-top: 20px;">
-                📲 INSTALL APP
-            </div>
+            <div class="nav-btn" data-v="services" onclick="osSwitchView('services')">🛠 Services</div>
         </nav>
         <div class="user-section">
             <div id="btn-login" class="login-trigger" onclick="sysAuth()">SIGN IN WITH GOOGLE</div>
@@ -461,13 +412,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </table>
     </div>
 </section>
-        <nav>
-            <!-- SECTION: BEAT BATTLE -->
 
-        </nav>
+<section id="v-services" class="view-section">
+    <h2 class="header-title">Services<span>.</span></h2>
+    
+    <div class="content-grid">
+        <!-- Картка 01 -->
+        <div class="module-card" style="cursor: default; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 15px;">SERVICE_01</div>
+                <h3 style="margin-bottom: 15px;">COACHING</h3>
+                <p style="color:var(--text-low); font-size:11px; line-height: 1.6;">
+                    Персональний розбір твоїх треків у FL Studio та консультації по зведенню.
+                </p>
+            </div>
+            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono'; font-weight: 700; color: #fff;">$20 / HR</span>
+                <!-- Ось робоча кнопка ORDER -->
+                <button class="os-btn" 
+                        style="background: var(--accent); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer;" 
+                        onclick="window.location.href='mailto:contact.dymacademy@gmail.com?subject=Service Inquiry'">
+                    ORDER
+                </button>
+            </div>
+        </div>
 
-        
-    </main>
+        <!-- Картка 02 -->
+        <div class="module-card" style="cursor: default; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 15px;">SERVICE_02</div>
+                <h3 style="margin-bottom: 15px;">MIX & MASTER</h3>
+                <p style="color:var(--text-low); font-size:11px; line-height: 1.6;">
+                    Професійне зведення та мастеринг твого проекту під стрімінгові платформи.
+                </p>
+            </div>
+            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono'; font-weight: 700; color: #fff;">FROM $30</span>
+                <button class="os-btn" 
+                        style="background: var(--accent); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer;" 
+                        onclick="window.location.href='mailto:contact.dymacademy@gmail.com?subject=Mixing Inquiry'">
+                    ORDER
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
 
     <footer>
     <div class="footer-left">
