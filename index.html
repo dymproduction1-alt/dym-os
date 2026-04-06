@@ -1,17 +1,9 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DYM.ACADEMY - Production OS</title>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WG3ZF4BV');</script>
-<!-- End Google Tag Manager -->
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="text/javascript">
@@ -228,18 +220,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         box-shadow: 0 0 30px var(--accent);
     }
     #bpm-display { transition: opacity 0.1s; }
-
-    #v-services.view-section {
-    width: 100%;
-    align-self: flex-start; /* Притискає до верху */
-}
     </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WG3ZF4BV"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
     <div id="notify">OS_NOTIFICATION</div>
 
@@ -252,7 +235,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="nav-btn" data-v="tracks" onclick="osSwitchView('tracks')">🎵 Portfolio</div>
             <div class="nav-btn" data-v="lab" onclick="checkLabAccess()">🧪 The Lab</div>
             <div class="nav-btn" id="nav-rank" onclick="osSwitchView('ranking')">🏆 Ranking</div>
-            <div class="nav-btn" data-v="services" onclick="osSwitchView('services')">🛠 Services</div>
+            <div id="install-btn" class="nav-btn" style="display: none; color: var(--accent); border: 1px solid var(--accent); margin-top: 20px;">
+                📲 INSTALL APP
+            </div>
         </nav>
         <div class="user-section">
             <div id="btn-login" class="login-trigger" onclick="sysAuth()">SIGN IN WITH GOOGLE</div>
@@ -412,53 +397,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </table>
     </div>
 </section>
+        <nav>
+            <!-- SECTION: BEAT BATTLE -->
 
-<section id="v-services" class="view-section">
-    <h2 class="header-title">Services<span>.</span></h2>
-    
-    <div class="content-grid">
-        <!-- Картка 01 -->
-        <div class="module-card" style="cursor: default; display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 15px;">SERVICE_01</div>
-                <h3 style="margin-bottom: 15px;">COACHING</h3>
-                <p style="color:var(--text-low); font-size:11px; line-height: 1.6;">
-                    Персональний розбір твоїх треків у FL Studio та консультації по зведенню.
-                </p>
-            </div>
-            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-family: 'JetBrains Mono'; font-weight: 700; color: #fff;">$20 / HR</span>
-                <!-- Ось робоча кнопка ORDER -->
-                <button class="os-btn" 
-                        style="background: var(--accent); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer;" 
-                        onclick="window.location.href='mailto:contact.dymacademy@gmail.com?subject=Service Inquiry'">
-                    ORDER
-                </button>
-            </div>
-        </div>
+        </nav>
 
-        <!-- Картка 02 -->
-        <div class="module-card" style="cursor: default; display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 15px;">SERVICE_02</div>
-                <h3 style="margin-bottom: 15px;">MIX & MASTER</h3>
-                <p style="color:var(--text-low); font-size:11px; line-height: 1.6;">
-                    Професійне зведення та мастеринг твого проекту під стрімінгові платформи.
-                </p>
-            </div>
-            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-family: 'JetBrains Mono'; font-weight: 700; color: #fff;">FROM $30</span>
-                <button class="os-btn" 
-                        style="background: var(--accent); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer;" 
-                        onclick="window.location.href='mailto:contact.dymacademy@gmail.com?subject=Mixing Inquiry'">
-                    ORDER
-                </button>
-            </div>
-        </div>
-    </div>
-</section>
-
-</main>
+        
+    </main>
 
     <footer>
     <div class="footer-left">
@@ -571,44 +516,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
 
         async function syncProfile() {
-    try {
-        // 1. Спробуємо отримати існуючий профіль
-        let { data: p, error: fetchError } = await api
-            .from('profiles')
-            .select('*')
-            .eq('id', user.id)
-            .single();
-
-        // 2. Якщо профілю немає (помилка PGRST116), створюємо його
-        if (fetchError && fetchError.code === 'PGRST116') {
-            console.log("Creating new profile for user:", user.id);
-            const { data: newP, error: insertError } = await api
-                .from('profiles')
-                .insert({ 
-                    id: user.id, 
-                    xp: 0, 
-                    is_pro: false,
-                    email: user.email // Додай колонку email, якщо вона є в таблиці
-                })
-                .select()
-                .single();
-            
-            if (insertError) throw insertError;
-            p = newP;
-        } else if (fetchError) {
-            throw fetchError;
+            let { data: p } = await api.from('profiles').select('*').eq('id', user.id).maybeSingle();
+            if (!p) {
+                const { data: newP } = await api.from('profiles').insert({ id: user.id, xp: 0, is_pro: false }).select().single();
+                p = newP;
+            }
+            xpTotal = p.xp || 0; isPro = p.is_pro || false; updateXPUI();
         }
-
-        // 3. Оновлюємо дані в інтерфейсі
-        xpTotal = p.xp || 0; 
-        isPro = p.is_pro || false; 
-        updateXPUI();
-        
-    } catch (err) {
-        console.error("Profile Sync Error:", err);
-        showToast("PROFILE_SYNC_ERROR");
-    }
-}
 
         function updateXPUI() {
             const lvl = Math.floor(xpTotal / 100) + 1;
