@@ -571,13 +571,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
 
         async function syncProfile() {
-            let { data: p } = await api.from('profiles').select('*').eq('id', user.id).maybeSingle();
-            if (!p) {
-                const { data: newP } = await api.from('profiles').insert({ id: user.id, xp: 0, is_pro: false }).select().single();
-                p = newP;
-            }
-            xpTotal = p.xp || 0; isPro = p.is_pro || false; updateXPUI();
+    try {
+        // 1. Спробуємо отримати існуючий профіль
+        let { data: p, error: fetchError } = await api
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+        // 2. Якщо профілю немає (помилка PGRST116), створюємо його
+        if (fetchError && fetchError.code === 'PGRST116') {
+            console.log("Creating new profile for user:", user.id);
+            const { data: newP, error: insertError } = await api
+                .from('profiles')
+                .insert({ 
+                    id: user.id, 
+                    xp: 0, 
+                    is_pro: false,
+                    email: user.email // Додай колонку email, якщо вона є в таблиці
+                })
+                .select()
+                .single();
+            
+            if (insertError) throw insertError;
+            p = newP;
+        } else if (fetchError) {
+            throw fetchError;
         }
+
+        // 3. Оновлюємо дані в інтерфейсі
+        xpTotal = p.xp || 0; 
+        isPro = p.is_pro || false; 
+        updateXPUI();
+        
+    } catch (err) {
+        console.error("Profile Sync Error:", err);
+        showToast("PROFILE_SYNC_ERROR");
+    }
+}
 
         function updateXPUI() {
             const lvl = Math.floor(xpTotal / 100) + 1;
