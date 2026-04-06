@@ -220,6 +220,17 @@
         box-shadow: 0 0 30px var(--accent);
     }
     #bpm-display { transition: opacity 0.1s; }
+
+        /* Це примусить всі активні в'юхи ставати в початок сторінки */
+.view-section.active {
+    display: block !important; /* Змінюємо з flex на block для передбачуваності */
+    opacity: 1;
+}
+
+/* Додамо трохи відступу зверху для грида, як в Academy */
+.content-grid {
+    margin-top: 20px;
+}
     </style>
 </head>
 <body>
@@ -238,6 +249,7 @@
             <div id="install-btn" class="nav-btn" style="display: none; color: var(--accent); border: 1px solid var(--accent); margin-top: 20px;">
                 📲 INSTALL APP
             </div>
+            <div class="nav-btn" data-v="services" onclick="osSwitchView('services')">🛠 Services</div>
         </nav>
         <div class="user-section">
             <div id="btn-login" class="login-trigger" onclick="sysAuth()">SIGN IN WITH GOOGLE</div>
@@ -401,7 +413,44 @@
             <!-- SECTION: BEAT BATTLE -->
 
         </nav>
+<section id="v-services" class="view-section">
+    <h2 class="header-title">Services<span>.</span></h2>
+    
+    <!-- Контейнер для карток послуг -->
+    <div class="content-grid">
+        
+        <!-- Service 01 -->
+        <div class="module-card" style="cursor: default; display: flex; flex-direction: column; justify-content: space-between; min-height: 280px;">
+            <div>
+                <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 15px;">SERVICE_01</div>
+                <h3 style="margin-bottom: 15px;">COACHING</h3>
+                <p style="color:var(--text-low); font-size:11px; line-height: 1.6;">
+                    Індивідуальні сесії по FL Studio. Розбір проектів, допомога зі зведенням та розробка твого унікального звуку.
+                </p>
+            </div>
+            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono'; font-weight: 700; color: #fff;">$20 / HR</span>
+                <button class="os-btn" style="background: var(--accent); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer;" onclick="window.location.href='mailto:contact.dymacademy@gmail.com'">ORDER</button>
+            </div>
+        </div>
 
+        <!-- Service 02 -->
+        <div class="module-card" style="cursor: default; display: flex; flex-direction: column; justify-content: space-between; min-height: 280px;">
+            <div>
+                <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom: 15px;">SERVICE_02</div>
+                <h3 style="margin-bottom: 15px;">MIX & MASTER</h3>
+                <p style="color:var(--text-low); font-size:11px; line-height: 1.6;">
+                    Повний цикл обробки твого треку. Зроблю так, щоб твій Phonk або Trap звучав чисто та потужно на будь-яких колонках.
+                </p>
+            </div>
+            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono'; font-weight: 700; color: #fff;">FROM $30</span>
+                <button class="os-btn" style="background: var(--accent); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer;" onclick="window.location.href='mailto:contact.dymacademy@gmail.com'">ORDER</button>
+            </div>
+        </div>
+
+    </div>
+</section>
         
     </main>
 
